@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\SeedData\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Data\SeedData\accounts.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

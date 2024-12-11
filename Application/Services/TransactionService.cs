@@ -1,4 +1,20 @@
-﻿using ConsoleBankApplication.Infrastructure.Repositories;
+﻿using ConsoleBankApplication.Application;
+using ConsoleBankApplication.Application.Services;
+using ConsoleBankApplication.Application.Utilities;
+using ConsoleBankApplication.Core;
+using ConsoleBankApplication.Core.Interfaces;
+using ConsoleBankApplication.Core.Models;
+using ConsoleBankApplication.Core.Models.Accounts;
+using ConsoleBankApplication.Infrastructure;
+using ConsoleBankApplication.Infrastructure.Encryption;
+
+
+
+
+
+
+
+
 
 public class TransactionService
 {
