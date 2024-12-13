@@ -16,11 +16,11 @@ namespace ConsoleBankApplication.Core.Models.Accounts
             MinimumBalance = minimumBalance;
         }
 
-        public override void Withdraw(decimal amount)
+        public override bool Withdraw(decimal amount)
         {
             if (Balance - amount < MinimumBalance)
-                throw new InvalidOperationException("Cannot withdraw below minimum balance.");
-            base.Withdraw(amount);
+                throw new InvalidOperationException($"Cannot withdraw below the minimum balance of {MinimumBalance:C}.");
+            return base.Withdraw(amount); // Base method still returns a bool
         }
 
         public override string GetAccountDetails()
@@ -28,5 +28,4 @@ namespace ConsoleBankApplication.Core.Models.Accounts
             return $"{base.GetAccountDetails()}, Minimum Balance: {MinimumBalance:C}";
         }
     }
-
 }

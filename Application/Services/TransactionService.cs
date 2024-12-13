@@ -1,20 +1,7 @@
-﻿using ConsoleBankApplication.Application;
-using ConsoleBankApplication.Application.Services;
-using ConsoleBankApplication.Application.Utilities;
-using ConsoleBankApplication.Core;
+﻿using System;
+using System.Collections.Generic;
+using ConsoleBankApplication.Core.Models; // Ensure you're using the correct namespace for Transaction
 using ConsoleBankApplication.Core.Interfaces;
-using ConsoleBankApplication.Core.Models;
-using ConsoleBankApplication.Core.Models.Accounts;
-using ConsoleBankApplication.Infrastructure;
-using ConsoleBankApplication.Infrastructure.Encryption;
-
-
-
-
-
-
-
-
 
 public class TransactionService
 {
@@ -36,17 +23,9 @@ public class TransactionService
         if (account == null || amount <= 0)
             return false;
 
-        account.Balance += amount;
+        account.Deposit(amount); // Use the Deposit method to modify the balance
 
-        var transaction = new Transaction
-        {
-            TransactionId = Guid.NewGuid(),
-            AccountNumber = accountNumber,
-            Amount = amount,
-            TransactionType = TransactionType.Deposit,
-            TransactionDate = DateTime.UtcNow
-        };
-
+        var transaction = new Transaction(accountNumber, amount, Transaction.TransactionType.Deposit);
         _transactionRepository.Add(transaction);
         return true;
     }
@@ -57,20 +36,10 @@ public class TransactionService
     public bool Withdraw(string accountNumber, decimal amount)
     {
         var account = _accountRepository.GetByAccountNumber(accountNumber);
-        if (account == null || amount <= 0 || account.Balance < amount)
+        if (account == null || amount <= 0 || !account.Withdraw(amount))  // Use Withdraw method
             return false;
 
-        account.Balance -= amount;
-
-        var transaction = new Transaction
-        {
-            TransactionId = Guid.NewGuid(),
-            AccountNumber = accountNumber,
-            Amount = amount,
-            TransactionType = TransactionType.Withdrawal,
-            TransactionDate = DateTime.UtcNow
-        };
-
+        var transaction = new Transaction(accountNumber, amount, Transaction.TransactionType.Withdrawal);
         _transactionRepository.Add(transaction);
         return true;
     }
@@ -83,19 +52,14 @@ public class TransactionService
         var fromAccount = _accountRepository.GetByAccountNumber(fromAccountNumber);
         var toAccount = _accountRepository.GetByAccountNumber(toAccountNumber);
 
-        if (fromAccount == null || toAccount == null || amount <= 0 || fromAccount.Balance < amount)
+        if (fromAccount == null || toAccount == null || amount <= 0 || !fromAccount.Withdraw(amount)) // Use Withdraw method
             return false;
 
-        fromAccount.Balance -= amount;
-        toAccount.Balance += amount;
+        toAccount.Deposit(amount); // Use Deposit method for the destination account
 
-        var transaction = new Transaction
+        var transaction = new Transaction(fromAccountNumber, amount, Transaction.TransactionType.Transfer)
         {
-            TransactionId = Guid.NewGuid(),
-            AccountNumber = fromAccountNumber,
-            Amount = amount,
-            TransactionType = TransactionType.Transfer,
-            TransactionDate = DateTime.UtcNow,
+            // Setting RelatedAccountNumber for transfer transactions
             RelatedAccountNumber = toAccountNumber
         };
 

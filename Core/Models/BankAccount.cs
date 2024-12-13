@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleBankApplication.Core.Models
 {
@@ -25,11 +21,12 @@ namespace ConsoleBankApplication.Core.Models
             Balance += amount;
         }
 
-        public virtual void Withdraw(decimal amount)
+        public virtual bool Withdraw(decimal amount)
         {
             if (amount <= 0) throw new ArgumentException("Amount must be positive.");
-            if (Balance < amount) throw new InvalidOperationException("Insufficient funds.");
+            if (Balance < amount) return false; // Insufficient funds
             Balance -= amount;
+            return true;
         }
 
         public virtual string GetAccountDetails()
@@ -37,5 +34,4 @@ namespace ConsoleBankApplication.Core.Models
             return $"{AccountHolder} - {AccountNumber}: Balance: {Balance:C}";
         }
     }
-
 }

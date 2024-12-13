@@ -5,16 +5,26 @@ BankApp/
 │   │   ├── User.cs               // Represents the customer
 │   │   ├── BankAccount.cs        // Base class for accounts
 │   │   ├── Transaction.cs        // Represents transactions
+│   │   ├── Accounts/               // Represents the customer
+│   │       ├── InvestmentAccount.cs        // Base class for accounts
+│   │       ├── PrivateAccount.cs        // Represents transactions
+│   │       ├── SavingAccount.cs        // Represents transactions
 │   ├── Interfaces/
 │       ├── IRepository.cs        // Generic repository interface
 │       ├── IAuthenticationService.cs // Authentication contract
+│       ├── IRepository.cs 
+│       ├── ITransactionRepository.cs 
 │
 ├── Infrastructure/
-│   ├── Repositories/
-│   │   ├── UserRepository.cs     // Manages user data
-│   │   ├── AccountRepository.cs  // Manages account data
-│   ├── Encryption/
-│       ├── EncryptionHelper.cs   // Handles encryption/decryption
+│   ├── DataRepositories/
+│   │   ├── Repositories.cs     // Base class for other repositories
+│   │   ├── UserRepository.cs   // sub class of repositories
+│   │   ├── AccountRepository.cs    // sub class of repositories
+│   ├── Utilities/
+│   │   ├── JsonFileHelper.cs   // Handles JSON read/write
+│   │   ├── AppConstants.cs     // Centralized constants for file paths
+│   ├──Encryption/
+│       ├──EncryptionHelper.cs
 │
 ├── Application/
 │   ├── Services/
@@ -23,6 +33,7 @@ BankApp/
 │   │   ├── AuthenticationService.cs // Manages login/logout
 │   ├── Utilities/
 │       ├── ValidationUtils.cs    // Reusable input validation methods
+│       ├── IDGenerator.cs          
 │
 ├── Presentation/
 │   ├── Program.cs                // Main console application entry point
