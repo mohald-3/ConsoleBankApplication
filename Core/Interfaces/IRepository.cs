@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace ConsoleBankApplication.Core.Interfaces
 {
-    internal interface IRepository
+    public interface IRepository<T>
     {
+        void Add(T entity);
+        T GetById(string id);
+        IEnumerable<T> GetAll();
+        void Update(T entity);
+        void Delete(string id);
     }
+
 }
